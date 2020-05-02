@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormControl, FormGroup, ControlValueAccessor } from '@angular/forms';
 import { TestService } from '../_services/test.service';
 
 
@@ -12,6 +12,8 @@ export class TestComponent implements OnInit {
 
   error: any;
   response: any;
+  count: number = 0;
+  value;
 
   constructor(
     private fb: FormBuilder,
@@ -37,22 +39,46 @@ export class TestComponent implements OnInit {
 
   onTestSubmit() {
 
-    if (this.testForm.invalid) {
-      return;
-    }
+    // if (this.testForm.invalid) {
+    //   return;
+    // }
 
-    this.testService.sendTestData(this.testForm.value)
-      .subscribe(
-        res => {
-          // contient resultat du test, à afficher dans la vue
-        this.response = res.message;
-       // console.log(this.response);
-        },
-        err => {
-          this.error = err;
-        //  console.log(this.error);
-        }
-      );
+    // this.testService.sendTestData(this.testForm.value)
+    //   .subscribe(
+    //     res => {
+    //       // contient resultat du test, à afficher dans la vue
+    //     this.response = res.message;
+    //    // console.log(this.response);
+    //     },
+    //     err => {
+    //       this.error = err;
+    //     //  console.log(this.error);
+    //     }
+    //   );
+
+
+
+
+    Object.keys(this.testForm.value)
+      .forEach((key: string) => {
+        this.value = this.testForm.get(key);
+          if (this.value.value == true) {
+            this.count++;
+            // alert(this.count)
+          }
+    })
+
+
+
+
+    if (this.count <= 12 && this.count >= 6) {
+      alert('Suspect!');
+     // console.log(this.count, this.value)
+    }
+    else {
+      alert('Ca va!');
+     // console.log(this.count)
+    }
   }
 
 }
